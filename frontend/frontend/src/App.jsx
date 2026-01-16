@@ -3,7 +3,8 @@ import "./App.css";
 import Analytics from "../../src/pages/Analytics";
 
 // ✅ Use Vercel environment variable
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = "https://hackfinal-production.up.railway.app";
+
 
 function App() {
   const [file, setFile] = useState(null);
