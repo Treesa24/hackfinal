@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export async function uploadReceipt(file) {
   const formData = new FormData();
@@ -12,10 +12,10 @@ export async function uploadReceipt(file) {
   if (!response.ok) {
     throw new Error("Failed to upload receipt");
   }
+
   return response.json();
 }
 
-// THIS IS WHAT YOUR ANALYTICS PAGE IS LOOKING FOR
 export async function fetchAnalytics() {
   const response = await fetch(`${API_URL}/receipt/analytics`);
   if (!response.ok) {

@@ -2,6 +2,9 @@ import { useState } from "react";
 import "./App.css";
 import Analytics from "../../src/pages/Analytics";
 
+// ✅ Use Vercel environment variable
+const API_URL = import.meta.env.VITE_API_URL;
+
 function App() {
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
@@ -17,27 +20,33 @@ function App() {
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch("http://127.0.0.1:8000/receipt/upload", {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      const res = await fetch(`${API_URL}/receipt/upload`, {
+        method: "POST",
+        body: formData,
+      });
 
-    const data = await res.json();
-    setResult(data);
-    setLoading(false);
-    setPage("result");
+      if (!res.ok) throw new Error("Upload failed");
+
+      const data = await res.json();
+      setResult(data);
+      setPage("result");
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert("Backend connection failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="page">
       <div className="card">
 
-        
-
         {/* HOME */}
         {page === "home" && !loading && (
           <>
-            <h1>🌱 BOYCO2 </h1>
+            <h1>🌱 BOYCO2</h1>
             <p className="subtitle">
               Track the environmental impact of your purchases
             </p>
